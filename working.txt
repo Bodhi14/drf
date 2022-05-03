@@ -1,0 +1,6 @@
+1. Client makes HTTP Request to API
+2. API will communicate to Web Application
+3. Web Application provides required data to API
+4. API returns response data to Client
+
+Data type :- JSON Data , XML Data
