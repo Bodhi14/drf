@@ -1,3 +1,4 @@
+from rest_framework.views import APIView
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
@@ -17,7 +18,7 @@ def article_list(request):
     if request.method == 'GET':
         articles = Article.objects.all()
         serializer = ArticleSerializer(articles, many=True)
-        return JsonResponse(serializer.data, safe = False)
+        return Response(serializer.data)
 
     elif request.method == 'POST':
         serializer = ArticleSerializer(data=request.data)
@@ -38,7 +39,7 @@ def article_detail(request, pk):
 
     if request.method == 'GET':
         serializer = ArticleSerializer(article)
-        return JsonResponse(serializer.data)
+        return Response(serializer.data)
     
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
@@ -46,12 +47,21 @@ def article_detail(request, pk):
 
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
     
     elif request.method == 'DELETE':
         article.delete()
         return HttpResponse(status=204)
+
+
+
+
+
+
+
+    
+
         
     
 
