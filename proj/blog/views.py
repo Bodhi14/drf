@@ -12,7 +12,7 @@ from rest_framework import status
 
 from rest_framework import permissions
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST','DELETE'])
 @permission_classes((permissions.AllowAny,))
 def article_list(request):
     if request.method == 'GET':
@@ -28,8 +28,13 @@ def article_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    elif request.method == 'DELETE':
         
-
+        
+    
+        
+@api_view(['GET','PUT','DELETE'])
+@permission_classes((permissions.AllowAny,))
 def article_detail(request, pk):
     try:
         article = Article.objects.get(pk=pk)
