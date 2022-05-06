@@ -39,13 +39,17 @@ def article_list(request):
         # return Response(serializer.errors, status=400)
 
 
-            
-         qs = Article.objects.all()
-         filteredqs = qs.filter(id=4)
-         if filteredqs:
-            filteredqs.last().delete()
-            serializer = ArticleSerializer(qs, many=True)
-            return Response(serializer.data, status=204)
+         data = JSONParser().parse(request)
+         serializer = ArticleSerializer(data=data)
+         if serializer.is_valid:
+             qs = Article.objects.all()
+
+             filteredqs = qs.filter(id=serializer["id"])
+             if filteredqs:
+                filteredqs.last().delete()
+                serializer = ArticleSerializer(qs, many=True)
+                return Response(serializer.data, status=204)
+         
 
             
 
