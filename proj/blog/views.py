@@ -66,7 +66,7 @@ def article_list(request):
         
     
         
-@api_view(['GET','PUT','POST','DELETE'])
+@api_view(['GET','PUT','DELETE'])
 @permission_classes((permissions.AllowAny,))
 def article_detail(request, pk):
     try:
@@ -87,14 +87,6 @@ def article_detail(request, pk):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
-    
-    elif request.method == 'POST':
-        serializer = ArticleSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
         article.delete()
