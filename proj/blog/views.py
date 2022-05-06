@@ -36,6 +36,10 @@ def article_list(request):
             article.delete()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
+
+
+    
+
         
         
 
