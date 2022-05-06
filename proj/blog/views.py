@@ -29,10 +29,24 @@ def article_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
-        qs = Article.all()
-        filteredqs = qs.filter(id=id)
-        if filteredqs:
+        # qs = Article.objects.all()
+        # data = JSONParser().parse(request)
+        # serializer = ArticleSerializer(data=data)
+        # if serializer.is_valid:
+        #     object = qs.get(data=data)
+        #     object.delete()
+        #     return Response(serializer.data, status=201)
+        # return Response(serializer.errors, status=400)
+
+
+            
+         qs = Article.objects.all()
+         filteredqs = qs.filter(id=4)
+         if filteredqs:
             filteredqs.first().delete()
+            serializer = ArticleSerializer(qs, many=True)
+            return Response(serializer.data, status=204)
+            
 
         
         
@@ -45,7 +59,7 @@ def article_list(request):
         
     
         
-@api_view(['GET','PUT','DELETE'])
+@api_view(['GET','PUT','POST','DELETE'])
 @permission_classes((permissions.AllowAny,))
 def article_detail(request, pk):
     try:
@@ -67,9 +81,17 @@ def article_detail(request, pk):
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
     
+    elif request.method == 'POST':
+        serializer = ArticleSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     elif request.method == 'DELETE':
         article.delete()
-        return HttpResponse(status=204)
+        return Response(status=204)
 
 
 
