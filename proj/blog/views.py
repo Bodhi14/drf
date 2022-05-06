@@ -43,9 +43,10 @@ def article_list(request):
          qs = Article.objects.all()
          filteredqs = qs.filter(id=4)
          if filteredqs:
-            filteredqs.first().delete()
+            filteredqs.last().delete()
             serializer = ArticleSerializer(qs, many=True)
             return Response(serializer.data, status=204)
+
             
 
         
