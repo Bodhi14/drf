@@ -6,15 +6,18 @@ from django.contrib import admin
 
 from .models import Article
 from .serializers import ArticleSerializer
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
 from rest_framework import permissions
 
 @api_view(['GET', 'POST', 'DELETE'])
-@permission_classes((permissions.AllowAny,))
-def article_list(request):
+@authentication_classes([BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def article_list(request, pk=None):
     if request.method == 'GET':
         articles = Article.objects.all()
         serializer = ArticleSerializer(articles, many=True)
@@ -29,13 +32,11 @@ def article_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
-        data = JSONParser().parse(request)
-        serializer = ArticleSerializer(data=data)
-        if serializer.is_valid:
-            article = Article.objects.get(id=data["id"])
-            article.delete()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+        id = pk
+        article = Article.objects.get(id=id)
+        article.delete()
+        return Response({'msg':'Data Deleted'})
+
 
 
     
