@@ -99,6 +99,16 @@ def article_detail(request, pk):
 
 
 
+        
+    
+
+
+            
+
+
+
+
+
 
 
 
