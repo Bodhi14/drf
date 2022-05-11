@@ -9,14 +9,13 @@ from .serializers import ArticleSerializer
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 
 from rest_framework import permissions
 
 @api_view(['GET', 'POST', 'DELETE'])
-@authentication_classes([BasicAuthentication])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def article_list(request, pk=None):
     if request.method == 'GET':
         articles = Article.objects.all()
