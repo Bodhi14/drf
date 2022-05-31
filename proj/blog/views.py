@@ -31,9 +31,11 @@ def article_list(request, pk=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
-        id = pk
-        article = Article.objects.get(id=id)
-        article.delete()
+        articles = Article.objects.all()
+        articles.last().delete()
+        
+
+        
         return Response({'msg':'Data Deleted'})
 
 
